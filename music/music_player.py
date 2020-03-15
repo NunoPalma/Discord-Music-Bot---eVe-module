@@ -17,6 +17,7 @@ class Music():
 		self.current_song = None
 		self.DOWNLOAD_DIRECTORY = 'music/downloads/'
 		self.ytsource = YTDLsource()
+		self.voters = set()
 
 		self.task = self.bot.loop.create_task(self.queue_loop())
 
@@ -58,6 +59,7 @@ class Music():
 	def cleanup(self):
 		for file in os.listdir(self.DOWNLOAD_DIRECTORY):
 			file_path = self.DOWNLOAD_DIRECTORY + file
+			file_path.close()
 			os.remove(file_path)
 
 
@@ -69,6 +71,15 @@ class Music():
 	def get_current_song(self):
 		song = Song(self.current_song[1])
 		return song.create_embed()
+
+	async def skip(self, ctx):
+		voter = ctx.message.author
+		try:
+			async with timeout(5):
+				if voter == self.current_song[1]['requester']:
+					ctx.voice_client.stop()
+		except asyncio.TimeoutError:
+			print("Can't access requester data")
 
 
 	async def queue_loop(self):
@@ -82,12 +93,11 @@ class Music():
 				async with timeout(300):
 					source = await self.queue.get()
 					data = self.songs[0]
+					self.current_song = [source, data]
 			except asyncio.TimeoutError:
 				await self.ctx.voice_client.disconnect()
 				await self.stop_queue_loop()
 				return
-
-			self.current_song = [source, data]
 
 			self.guild.voice_client.play(source, after=lambda _: self.bot.loop.call_soon_threadsafe(self.next.set))
 

@@ -46,6 +46,10 @@ class music_commands(commands.Cog):
 		await self.music_player.add_to_queue(discord.FFmpegPCMAudio(data_source), data)
 
 
+	"""
+	Disconnects the VoiceClient.
+	@param ctx Current context
+	"""
 	@music.command(name = 'stop')
 	async def stop(self, ctx):
 		vc = ctx.voice_client
@@ -60,9 +64,21 @@ class music_commands(commands.Cog):
 		except AttributeError:
 			pass
 
+	"""
+	If the VoiceClient is playing audio, then the current song is skipped.
+	@param ctx Current context
+	"""
+	@music.command(name = 'skip')
+	async def skip(self, ctx):
+		vc = ctx.voice_client
+		if not vc or not vc.is_connected or self.music_player.queue_is_empty():
+			return await ctx.send('I\'m not playing any song at the moment', delete_after=10)
+
+		await self.music_player.skip(ctx)
+
 
 	"""
-	If the VoiceClient is playing audio, then the audio is paused
+	If the VoiceClient is playing audio, then the audio is paused.
 	@param ctx Current context
 	"""
 	@music.command(name  = 'pause')
