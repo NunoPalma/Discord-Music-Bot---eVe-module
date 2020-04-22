@@ -18,6 +18,7 @@ class Music():
 		self.DOWNLOAD_DIRECTORY = 'music/downloads/'
 		self.ytsource = YTDLsource()
 		self.voters = set()
+		self.votes = 0
 
 		self.task = self.bot.loop.create_task(self.queue_loop())
 
@@ -77,9 +78,23 @@ class Music():
 		try:
 			async with timeout(5):
 				if voter == self.current_song[1]['requester']:
+					votes = 0
 					ctx.voice_client.stop()
+				else:
+					await vote_skip()	
 		except asyncio.TimeoutError:
 			print("Can't access requester data")
+
+
+	async def vote_skip(self):		
+		if votes == 3:
+			self.ctx.send('Skipping!')
+			self.ctx.voice_client.stop()
+			votes = 0
+			return
+
+		votes += 1
+		self.ctx.send('Votes required to skip the current song: %d' %(3 - votes))	
 
 
 	async def queue_loop(self):
