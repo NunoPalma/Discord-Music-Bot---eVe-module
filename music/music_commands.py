@@ -11,13 +11,7 @@ class music_commands(commands.Cog):
 		self.music_player = None
 		self.bot = bot
 
-
-	@commands.group(name = 'music', invoke_without_command = True)
-	async def music(ctx):
-		await ctx.send("oof")
-
-
-	@music.command(name= 'queue')
+	@commands.command(name= 'q')
 	async def queue(self, ctx):
 		if not self.music_player or self.music_player.queue_is_empty():
 			await ctx.send("The queue is currently empty. Feel free to add some cool jams!")
@@ -26,7 +20,7 @@ class music_commands(commands.Cog):
 		await ctx.send(embed=self.music_player.get_queue())
 
 
-	@music.command(name = 'play')
+	@commands.command(name = 'p')
 	async def play(self, ctx, *, args):
 		try:
 			voice_channel = self.get_voice_channel(ctx, ctx.message.author)
@@ -50,7 +44,7 @@ class music_commands(commands.Cog):
 	Disconnects the VoiceClient.
 	@param ctx Current context
 	"""
-	@music.command(name = 'stop')
+	@commands.command(name = 'stop')
 	async def stop(self, ctx):
 		vc = ctx.voice_client
 
@@ -68,7 +62,7 @@ class music_commands(commands.Cog):
 	If the VoiceClient is playing audio, then the current song is skipped.
 	@param ctx Current context
 	"""
-	@music.command(name = 'skip')
+	@commands.command(name = 'skip')
 	async def skip(self, ctx):
 		vc = ctx.voice_client
 		if not vc or not vc.is_connected or self.music_player.queue_is_empty():
@@ -81,7 +75,7 @@ class music_commands(commands.Cog):
 	If the VoiceClient is playing audio, then the audio is paused.
 	@param ctx Current context
 	"""
-	@music.command(name  = 'pause')
+	@commands.command(name  = 'pause')
 	async def pause(self, ctx):
 		vc = ctx.voice_client
 		if vc and vc.is_playing():
@@ -92,7 +86,7 @@ class music_commands(commands.Cog):
 	If the VoiceClient is playing audio, but is paused then the audio is resumed.
 	@param ctx Current context
 	"""
-	@music.command(name = 'resume')
+	@commands.command(name = 'resume')
 	async def resume(self, ctx):
 		vc = ctx.voice_client
 		if vc and vc.is_paused():
@@ -104,11 +98,32 @@ class music_commands(commands.Cog):
 	will be presented on the channel where the command was invoked.
 	@param ctx Current context
 	"""
-	@music.command(name = 'current')
+	@commands.command(name = 'current')
 	async def current(self, ctx):
 		vc = ctx.voice_client
 		if vc and vc.is_playing and not self.music_player.queue_is_empty():
 			await ctx.send(embed=self.music_player.get_current_song())
+
+
+	"""
+	Prints the commands' usage.
+	@param ctx Current context
+	"""
+	@commands.command(name = 'help')
+	async def current(self, ctx):
+		embed = discord.Embed(color = discord.Colour.orange())
+
+		embed.set_author(name='help')
+
+		embed.add_field(name='?q', value='Queue information.', inline=False)
+		embed.add_field(name='?current', value='Current music information.', inline=False)
+		embed.add_field(name='?p', value='Plays the requested music.', inline=False)
+		embed.add_field(name='?stop', value='Removes the bot from the voice channel. Queue is deleted.', inline=False)
+		embed.add_field(name='?skip', value='Skips the current song.', inline=False)
+		embed.add_field(name='?pause', value='Pauses the current song.', inline=False)
+		embed.add_field(name='?resume', value='Resumes the previously paused song.', inline=False)
+
+		await ctx.send(embed=embed)		
 
 
 	"""
@@ -141,4 +156,5 @@ class music_commands(commands.Cog):
 
 
 def setup(bot):
+	bot.remove_command('help')
 	bot.add_cog(music_commands(bot))
