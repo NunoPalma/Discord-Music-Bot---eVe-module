@@ -78,7 +78,7 @@ class Music():
 		try:
 			async with timeout(5):
 				if voter == self.current_song[1]['requester']:
-					votes = 0
+					self.votes = 0
 					ctx.voice_client.stop()
 				else:
 					await self.vote_skip()	
