@@ -94,7 +94,7 @@ class Music():
 			return
 
 		self.votes += 1
-		self.ctx.send('Votes required to skip the current song: %d' %(3 - votes))	
+		self.ctx.send('Votes required to skip the current song: %d' %(3 - self.votes))	
 
 
 	async def queue_loop(self):
