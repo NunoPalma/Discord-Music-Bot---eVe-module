@@ -81,7 +81,7 @@ class Music():
 					votes = 0
 					ctx.voice_client.stop()
 				else:
-					await vote_skip()	
+					await self.vote_skip()	
 		except asyncio.TimeoutError:
 			print("Can't access requester data")
 
