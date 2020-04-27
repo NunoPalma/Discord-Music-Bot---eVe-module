@@ -87,13 +87,13 @@ class Music():
 
 
 	async def vote_skip(self):		
-		if votes == 3:
+		if self.votes == 3:
 			self.ctx.send('Skipping!')
 			self.ctx.voice_client.stop()
-			votes = 0
+			self.votes = 0
 			return
 
-		votes += 1
+		self.votes += 1
 		self.ctx.send('Votes required to skip the current song: %d' %(3 - votes))	
 
 
