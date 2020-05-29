@@ -37,7 +37,7 @@ class Music():
 		return queue[0].create_embed(song_queue=queue, data=data)
 
 
-	def queue_is_empty(self):
+	def  (self):
 		return False if self.current_song else True
 
 
@@ -72,6 +72,7 @@ class Music():
 	def get_current_song(self):
 		song = Song(self.current_song[1])
 		return song.create_embed()
+		
 
 	async def skip(self, ctx):
 		voter = ctx.message.author

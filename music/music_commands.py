@@ -157,4 +157,5 @@ class music_commands(commands.Cog):
 
 def setup(bot):
 	bot.remove_command('help')
+	bot.remove_command('current')
 	bot.add_cog(music_commands(bot))
