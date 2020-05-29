@@ -37,7 +37,7 @@ class Music():
 		return queue[0].create_embed(song_queue=queue, data=data)
 
 
-	def  (self):
+	def  queue_is_empty(self):
 		return False if self.current_song else True
 
 
@@ -95,7 +95,7 @@ class Music():
 			return
 
 		self.votes += 1
-		self.ctx.send('Votes required to skip the current song: %d' %(3 - self.votes))	
+		await self.ctx.send('Votes required to skip the current song: %d' %(3 - self.votes))	
 
 
 	async def queue_loop(self):

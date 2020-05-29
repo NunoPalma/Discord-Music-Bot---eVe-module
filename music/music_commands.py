@@ -98,8 +98,8 @@ class music_commands(commands.Cog):
 	will be presented on the channel where the command was invoked.
 	@param ctx Current context
 	"""
-	@commands.command(name = 'current')
-	async def current(self, ctx):
+	@commands.command(name = 'c')
+	async def c(self, ctx):
 		vc = ctx.voice_client
 		if vc and vc.is_playing and not self.music_player.queue_is_empty():
 			await ctx.send(embed=self.music_player.get_current_song())
