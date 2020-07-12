@@ -16,13 +16,16 @@ class poll_commands(commands.Cog):
 		suggestions = args.split("#")
 
 		for i in range(1, len(suggestions)):
-			self.poll_list[suggestions[i]] = 0
-			await ctx.send("Adding " + suggestions[i] + " to the poll!")
+			value = self.trim_string(suggestions[i])
+
+			self.poll_list[value] = 0
+			await ctx.send("Adding " + value + " to the poll!")
 
 	@commands.command(name= 'vote')
 	async def vote(self, ctx, *, args):
 		value = args.split("#")
-		if value not in self.poll_list:
+		value = self.trim_string(value)
+		if value not in self.poll_list.keys():
 			await ctx.send(value + " isn't in the poll list yet. Feel free to add it.")
 			return
 
@@ -36,6 +39,12 @@ class poll_commands(commands.Cog):
 		poll_list = {}
 
 		await ctx.send("The winner is " + result + " with " + poll_list[result] + " votes.")
+
+	def trim_string(self, value):
+		if value[len(value) - 1] == " ":
+			value = value[:-1]
+
+		return value	
 
 def setup(bot):
 	bot.add_cog(poll_commands(bot))	
