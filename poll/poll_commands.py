@@ -31,7 +31,7 @@ class poll_commands(commands.Cog):
 
 		self.poll_list[value] += 1
 
-		await ctx.send("Nice! You just added one vote to " + value ". It currently has " + self.poll_list[value] + " votes.")
+		await ctx.send("Nice! You just added one vote to " + value + ". It currently has " + self.poll_list[value] + " votes.")
 
 		
 	@commands.command(name= 'end')
