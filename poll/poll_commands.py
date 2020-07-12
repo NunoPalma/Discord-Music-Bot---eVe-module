@@ -29,16 +29,16 @@ class poll_commands(commands.Cog):
 			await ctx.send(value + " isn't in the poll list yet. Feel free to add it.")
 			return
 
-		poll_list[value] += 1
+		self.poll_list[value] += 1
 
 		
 	@commands.command(name= 'end')
 	async def end(self, ctx):
 		result = max(self.poll_list, key=self.poll_list.get)
 
-		poll_list = {}
+		self.poll_list = {}
 
-		await ctx.send("The winner is " + result + " with " + poll_list[result] + " votes.")
+		await ctx.send("The winner is " + result + " with " + self.poll_list[result] + " votes.")
 
 	def trim_string(self, value):
 		if value[len(value) - 1] == " ":
