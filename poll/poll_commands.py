@@ -23,7 +23,7 @@ class poll_commands(commands.Cog):
 
 	@commands.command(name= 'vote')
 	async def vote(self, ctx, *, args):
-		value = args.split("#")
+		value = args.split("#")[1]
 		value = self.trim_string(value)
 		if value not in self.poll_list.keys():
 			await ctx.send(value + " isn't in the poll list yet. Feel free to add it.")
